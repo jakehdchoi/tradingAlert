@@ -89,8 +89,8 @@ def main():
     print('tier_2_list:', tier_2_list)
 
     # generate telegram message
-    msg = time.strftime('%Y-%m-%d', time.localtime(start)) + '\ntier_1_list: ' + \
-        str(tier_1_list) + '\ntier_2_list: ' + str(tier_2_list)
+    msg = time.strftime('%Y-%m-%d', time.localtime(start)) + '\n\ntier_1_list: \n' + \
+        str(tier_1_list) + '\n\ntier_2_list: \n' + str(tier_2_list)
 
     # sendMessage to telegram
     sendMessage(msg)
