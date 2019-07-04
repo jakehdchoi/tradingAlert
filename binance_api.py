@@ -172,23 +172,6 @@ def get_period_candles(market_symbol, interval_symbol, endTime, period):
         #   ], ... []
         # ]
 
-# get balances of full binance list, most of them are zero
-# def get_balance_list_full():
-#     return signed_request('https://www.binance.com/api/v3/account?', '')['balances']
-
-# # get the balance of one specific currency
-# def get_balance_list_of(symbol): # this is not market_symbol, ex) 'BTC' or 'USDT'
-#     r = signed_request('https://www.binance.com/api/v3/account?', '')['balances']
-#     for i in r:
-#         if i['asset'] == symbol:
-#             r = i
-#     return r
-
-# def cut_balance_list_of(balance_list, symbol):
-#     for i in balance_list:
-#         if i['asset'] == symbol:
-#             return i
-
 
 def get_exchange_info():
     return simple_request('https://www.binance.com/api/v1/exchangeInfo')
