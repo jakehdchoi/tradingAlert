@@ -18,5 +18,6 @@ interval_symbol_lists = {
     '1M': '2592000000'
 }
 
-
-interval_symbol = '1w'
+# telegram
+my_token = ''
+chat_id = ''

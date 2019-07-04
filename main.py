@@ -5,8 +5,13 @@ import json
 
 from config import *
 
-from binance_api import *
+from api_binance import *
+from api_telegram import *
 
+
+# telegram (use config)
+# my_token = '708058741:AAE_Adii3xQhfZTxo4hxbHxj9nYpBeuHmsw'
+# chat_id = '386497377'
 
 interval_symbol = '1w'
 period_list = [20, 55]
@@ -46,10 +51,12 @@ def main():
             candle_data = get_period_candles(
                 market_symbol, interval_symbol, endTime, period)
 
-            # removing last candle
+            # passing market symbols that aren't enough candle data
             if len(candle_data) == period + 1:
-                del candle_data[-1]
+                # del candle_data[-1]
+                pass
             else:
+                print('not enough candle data:', len(candle_data))
                 continue
 
             # print('candle_data:', len(candle_data))
@@ -57,7 +64,7 @@ def main():
             close_sum = 0
             for candle in candle_data:
                 close_sum += float(candle[4])
-            sma = close_sum / (period)
+            sma = close_sum / (period+1)
             # print(sma)
 
             if float(candle_data[-1][4]) > sma:
@@ -80,6 +87,13 @@ def main():
             tier_2_list.append(ele)
 
     print('tier_2_list:', tier_2_list)
+
+    # generate telegram message
+    msg = time.strftime('%Y-%m-%d', time.localtime(start)) + '\ntier_1_list: ' + \
+        str(tier_1_list) + '\ntier_2_list: ' + str(tier_2_list)
+
+    # sendMessage to telegram
+    sendMessage(msg)
 
     #-#-#-#-#-#-#-#-#-#
     print('')
