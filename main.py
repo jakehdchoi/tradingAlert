@@ -7,7 +7,7 @@ from config import *
 from api_binance import *
 from api_telegram import *
 
-
+# ddd
 # telegram (use config)
 # my_token = '708058741:AAE_Adii3xQhfZTxo4hxbHxj9nYpBeuHmsw'
 # chat_id = '386497377'

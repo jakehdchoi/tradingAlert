@@ -9,6 +9,8 @@ import json
 
 from config import *
 
+# d
+
 # from binance_api_requests import *
 
 # from market_symbol_list import market_symbol_list
@@ -143,18 +145,28 @@ from config import *
 #         print('Binance error in private request: get_open_orders for ' + market_symbol)
 #         return 'error'
 
+
 # 미완성인 현재 캔들까지해서 period + 1 개 캔들을 불러온다 (현재 캔들은 open price 용도)
 def get_period_candles(market_symbol, interval_symbol, endTime, period):
     try:
-        startTime = endTime - \
-            ((period + 1) * int(interval_symbol_lists[interval_symbol]))
-        candle_data = simple_request('https://www.binance.com/api/v1/klines?symbol=' + market_symbol +
-                                     '&interval=' + interval_symbol + '&startTime=' + str(startTime) + '&endTime=' + str(endTime))
+        startTime = endTime - (
+            (period + 1) * int(interval_symbol_lists[interval_symbol])
+        )
+        candle_data = simple_request(
+            "https://www.binance.com/api/v1/klines?symbol="
+            + market_symbol
+            + "&interval="
+            + interval_symbol
+            + "&startTime="
+            + str(startTime)
+            + "&endTime="
+            + str(endTime)
+        )
         # return historical_data[-period:]
         return candle_data
     except:
-        print('Binance error in public request: klines for ' + market_symbol)
-        return 'error'
+        print("Binance error in public request: klines for " + market_symbol)
+        return "error"
         # [
         #   [
         #     1499040000000,      // [0] Open time
@@ -174,27 +186,28 @@ def get_period_candles(market_symbol, interval_symbol, endTime, period):
 
 
 def get_exchange_info():
-    return simple_request('https://www.binance.com/api/v1/exchangeInfo')
+    return simple_request("https://www.binance.com/api/v1/exchangeInfo")
 
 
 def get_btcusdt_market_info():
-    exchange_info = simple_request(
-        'https://www.binance.com/api/v1/exchangeInfo')['symbols']
+    exchange_info = simple_request("https://www.binance.com/api/v1/exchangeInfo")[
+        "symbols"
+    ]
     for symbol_info in exchange_info:
-        if symbol_info['symbol'] == 'BTCUSDT':
+        if symbol_info["symbol"] == "BTCUSDT":
             return symbol_info
 
 
 def timestamp():
     try:
-        timestamp = simple_request('https://www.binance.com/api/v1/time?')
+        timestamp = simple_request("https://www.binance.com/api/v1/time?")
         if timestamp is None or len(timestamp) == 0:
             return timestamp()
         else:
-            return timestamp['serverTime']  # returning <int>
+            return timestamp["serverTime"]  # returning <int>
     except:
-        print('Binance error in public request: timestamp')
-        return 'error'
+        print("Binance error in public request: timestamp")
+        return "error"
 
 
 ########## requests ##########
@@ -262,28 +275,51 @@ def simple_request(url):
             return r.json()
         elif request_counter > 10:  # write log_trace & SystemExit
             t = time.time()
-            log_t = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t))
+            log_t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))
             log_status_code = str(r.status_code)
-            with open(log_trace_file_location, 'a') as f:
-                f.write('\n' + log_t + ' simple_request_error ' +
-                        url + ' status_code ' + log_status_code)
+            with open(log_trace_file_location, "a") as f:
+                f.write(
+                    "\n"
+                    + log_t
+                    + " simple_request_error "
+                    + url
+                    + " status_code "
+                    + log_status_code
+                )
             raise SystemExit
         else:  # write log_simple_error
             request_counter += 1
             t = time.time()
-            log_t = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t))
+            log_t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))
             log_status_code = str(r.status_code)
             try:
-                with open(log_simple_error_file_location, 'r') as f:
+                with open(log_simple_error_file_location, "r") as f:
                     f.read()
-                with open(log_simple_error_file_location, 'a') as f:
-                    f.write('\n' + log_t + ' ' + url + ' ' +
-                            log_status_code + ' ' + str(request_counter))
+                with open(log_simple_error_file_location, "a") as f:
+                    f.write(
+                        "\n"
+                        + log_t
+                        + " "
+                        + url
+                        + " "
+                        + log_status_code
+                        + " "
+                        + str(request_counter)
+                    )
             except:
-                log_error_data = 'local_date local_time simple_request_error_url status_code request_counter'
-                with open(log_simple_error_file_location, 'w') as f:
-                    f.write(log_error_data + '\n' + log_t + ' ' + url +
-                            ' ' + log_status_code + ' ' + str(request_counter))
+                log_error_data = "local_date local_time simple_request_error_url status_code request_counter"
+                with open(log_simple_error_file_location, "w") as f:
+                    f.write(
+                        log_error_data
+                        + "\n"
+                        + log_t
+                        + " "
+                        + url
+                        + " "
+                        + log_status_code
+                        + " "
+                        + str(request_counter)
+                    )
             if enable_debug_mode == True:
                 print(r)
             time.sleep(10)
@@ -291,8 +327,9 @@ def simple_request(url):
 
 ########## utilities ##########
 
+
 def cut_btc(symbol):
-    return symbol.replace('BTC', '')
+    return symbol.replace("BTC", "")
 
 
 def format_float(a):
